@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+     
+{% block title %}{{post.title}}{% endblock %}
+ 
+{% block content %}
+<article>
+    <header>
+        <div class="page-header">
+
+			{% if user.is_superuser %}
+            <div class="pull-right">
+                <form action="{% url 'blog.views.delete_post' post.id %}" method="POST">{% csrf_token %}
+            	<a class="btn btn-danger" href="{% url 'blog.views.delete_post' post.id %}">Delete Post</a>
+            </div>
+            {% endif %}
+
+			<h1> {{post.title}} </h1>
+
+			<small>
+			<time datetime="{{post.created|date:"c"}}">
+            {{post.created|date}}
+            </time>
+            </small>
+		</div>
+    </header>
+    <p class="description">
+        {{post.description}}
+    </p>
+    {{post.content|safe}}
+</article>
+{% endblock %}
